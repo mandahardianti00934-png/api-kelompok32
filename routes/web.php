@@ -1,30 +1,33 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SapaController;
+use App\Http\Controllers\ProductController;
+Route::get('/sapa', [SapaController::class, 'index']);
+
+// Satu controller dapat memiliki beberapa method
+Route::get('/product', [ProductController::class, 'index']); 
+Route::get('/product/addProduct', [ProductController::class, 'addProduct']);
+
 
 Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/hello', function () {
-    return 'Hello Laravel dari Manda 707082400051';
+    return view('pages.beranda');
 });
 
-Route::get('/profil', function () {
-    return view('pages.profil',[
-        'nama' => "manda hardi yanti",
-        'nim' => "707082400051",
-        'kelas' => 'trm03',
-        'status'
+Route::get('/about', function () {
+    return view('pages.about', [
+        'nama'  => 'Manda Hardi Yanti',
+        'kelas' => 'D4SM-48-03',
+        'nim'   => '707082400051',
     ]);
 });
 
-Route::get('/hello', function () {
-    return view('welcome');
+Route::view('/contact', 'pages.contact');
+
+Route::get('/latihan', function () {
+    $matakuliah = ['Pemrograman Web', 'Basis Data', 'UI/UX'];
+    return view('pages.latihan', ['matakuliah' => $matakuliah]);
 });
 
-Route::get('/beranda', function () {
-    return view('pages.beranda',[
-    'nim' => "707082400051"
-    ]);
-});
 
+Route::post('/product', [ProductController::class, 'store']);

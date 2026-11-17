@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda</title>
-</head>
-<body>
+@extends('layouts.master')
 
-    <nav>
-        <a href="/">Beranda</a> |
-        <a href="/profil">profil</a>
-    </nav>
-
-    <h1>Selamat Datang {{$nim}}</h1>
-
-    <p>Website Praktikum Laravel 12.</p>
+@section('content')
+<div class="container mt-3">
+    {{-- Gunakan tag H3 untuk judul utama dan H4 untuk detail agar tebal --}}
+    <h3>Selamat datang!!</h3>
+    <h4>Perkenalkan saya Manda Hardi Yanti, dari kelas D4SM-48-03 dengan nim 707082400051</h4>
+</div>
+@endsection
