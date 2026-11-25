@@ -32,6 +32,9 @@
             </thead>
             <tbody>
                 @foreach ($data_produk as $item)
+                @php
+                    $productId = $item->id_product ?? $item->id;
+                @endphp
                 <tr>
                     <th scope="row">{{($data_produk->perPage() * ($data_produk->currentPage()-1)) +
                         $loop->iteration}}</th>
@@ -39,9 +42,13 @@
                     <td>{{$item->stock_product}}</td>
                     <td>Rp. {{number_format($item->price_product, 0, ',', '.')}}</td>
                     <td>{{$item->desc_product}}</td>
-                    <td>
-                        <button type="button" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-warning">Edit</button>
+                    <td class="d-flex gap-1">
+                        <a href="{{ url('/product/' . $productId . '/edit') }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ url('/product/' . $productId) }}" method="POST" onsubmit="return confirm('KONFIRMASI ULANG !!! Yakin ingin menghapus produk ini?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
@@ -49,7 +56,6 @@
         </table>
         <div>
             {{ $data_produk->links('pagination::bootstrap-5') }}
-            {{-- isi bagian kosong ini untuk menampilkan detail data lainnya --}}
         </div>
     </div>
 </div>
