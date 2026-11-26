@@ -7,35 +7,42 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $data_toko = [
             'nama_toko' => 'Tulis Nama Kamu',
             'alamat_toko' => 'Jl. Terus Jadian Kagak',
-            'status_toko' => 'Belum Pasti'
+            'status_toko' => 'Belum Pasti',
         ];
 
-        //kita gunakan Eloquent ORM (Model Product dari Modul 8)
-        $data_product = Product::orderBy('id_product', 'desc')->paginate(10); //query data produk, 10 data per halaman, data terbaru di atas
-        
-        return view('pages.product.show', [
-            'data_toko'=> $data_toko,
-            'data_produk'=>$data_product,
+        $data_product = Product::orderBy('id_product', 'desc')->paginate(10);
+
+        return view('pages.product.index', [
+            'data_toko' => $data_toko,
+            'data_produk' => $data_product,
         ]);
     }
 
-    public function addProduct(){
+    public function show($id)
+    {
+        $product = Product::where('id_product', $id)->firstOrFail();
+
+        return view('pages.product.show', compact('product'));
+    }
+
+    public function addProduct()
+    {
         return view('pages.product.addProduct');
     }
 
-    public function store(Request $request){
-
-        // kita akan melakukan validasi setiap data yang diinputkan
+    public function store(Request $request)
+    {
         $request->validate([
             'name_product' => 'required|min:4|max:20',
             'stock_product' => 'required|integer|min:0',
             'price_product' => 'required|integer|min:0',
             'desc_product' => 'required',
-        ],[
+        ], [
             'name_product.min' => 'Nama produk minimal 4 karakter.',
             'name_product.max' => 'Nama produk maksimal 20 karakter.',
             'name_product.required' => 'Nama produk wajib diisi.',
@@ -47,32 +54,33 @@ class ProductController extends Controller
             'price_product.min' => 'Harga produk tidak boleh kurang dari 0.',
             'desc_product.required' => 'Deskripsi produk wajib diisi.',
         ]);
-        
-        //kita tambahkan data yang di inputkan ke dalam database 
+
         Product::create([
             'name_product' => $request->name_product,
             'stock_product' => $request->stock_product,
             'price_product' => $request->price_product,
             'desc_product' => $request->desc_product,
-            'id_category' => rand(1,3), //kita gunakan fungsi random untuk menambahkan category
+            'id_category' => rand(1, 3),
         ]);
 
-        //kita akan memberikan pesan ketika data berhasil di inputkan
-        return redirect('/product')->with('message','Data Berhasil Ditambahkan');
+        return redirect('/product')->with('message', 'Data Berhasil Ditambahkan');
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $product = Product::where('id_product', $id)->firstOrFail();
+
         return view('pages.product.editProduct', compact('product'));
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'name_product' => 'required|min:4|max:20',
             'stock_product' => 'required|integer|min:0',
             'price_product' => 'required|integer|min:0',
             'desc_product' => 'required',
-        ],[
+        ], [
             'name_product.min' => 'Nama produk minimal 4 karakter.',
             'name_product.max' => 'Nama produk maksimal 20 karakter.',
             'name_product.required' => 'Nama produk wajib diisi.',
@@ -93,13 +101,14 @@ class ProductController extends Controller
             'desc_product' => $request->desc_product,
         ]);
 
-        return redirect('/product')->with('message','Data Berhasil Diupdate');
+        return redirect('/product')->with('message', 'Data Berhasil Diupdate');
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $product = Product::where('id_product', $id)->firstOrFail();
         $product->delete();
 
-        return redirect('/product')->with('message','Data Berhasil Dihapus');
+        return redirect('/product')->with('message', 'Data Berhasil Dihapus');
     }
 }
