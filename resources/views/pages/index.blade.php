@@ -32,14 +32,16 @@
                         <th scope="row">{{ ($categories->perPage() * ($categories->currentPage() - 1)) + $loop->iteration }}</th>
                         <td>{{ $category->category_name }}</td>
                         <td>{{ $category->description }}</td>
-                        <td class="d-flex gap-1">
-                            <a href="{{ url('/category/' . $categoryId) }}" class="btn btn-info btn-sm text-white">Detail</a>
-                            <a href="{{ url('/category/' . $categoryId . '/edit') }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ url('/category/' . $categoryId) }}" method="POST" onsubmit="return confirm('KONFIRMASI ULANG !!! Yakin ingin menghapus kategori ini?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a href="{{ url('/category/' . $categoryId) }}" class="btn btn-info btn-sm text-white">Detail</a>
+                                <a href="{{ url('/category/' . $categoryId . '/edit') }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ url('/category/' . $categoryId) }}" method="POST" onsubmit="return confirm('KONFIRMASI ULANG !!! Yakin ingin menghapus kategori ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty
